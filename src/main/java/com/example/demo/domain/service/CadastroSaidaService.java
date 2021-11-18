@@ -1,6 +1,9 @@
 package com.example.demo.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.model.Saida;
@@ -20,15 +23,21 @@ public class CadastroSaidaService {
 	@Autowired
 	private CategoriaDespesaRepository categoriaDespesaRepository;
 	
-	
-	
 	public Saida salvar(Saida saida) {
 		Long idProvento = saida.getProvento().getId_provento();
 		saida.setProvento(proventoRepository.getById(idProvento));
 		Long idCategoriaDespesa= saida.getCategoriaDespesa().getId_categoria_despesa();
 		saida.setCategoriaDespesa(categoriaDespesaRepository.getById(idCategoriaDespesa));
 		return saidaRepository.save(saida); 
-		
+	}
+	
+	@Transactional
+	public void remover(Long id) {
+		try {
+			saidaRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new NullPointerException("erro de integridade no banco");
+		}
 	}
 	
 }

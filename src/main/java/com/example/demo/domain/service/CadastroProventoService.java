@@ -1,10 +1,12 @@
 package com.example.demo.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.model.Provento;
-import com.example.demo.api.model.Usuario;
 import com.example.demo.api.repository.ProventoRepository;
 import com.example.demo.api.repository.TipoEntradaRepository;
 import com.example.demo.api.repository.TipoMoedaRepository;
@@ -12,6 +14,7 @@ import com.example.demo.api.repository.UsuarioRepository;
 
 @Service
 public class CadastroProventoService {
+	
 	@Autowired
 	private ProventoRepository proventoRepository;
 	
@@ -24,6 +27,7 @@ public class CadastroProventoService {
 	@Autowired
 	private TipoMoedaRepository tipoMoedaRepository;
 	
+	@Transactional
 	public Provento salvar(Provento provento) {
 		Long idUsuario = provento.getUsuario().getId_usuario();
 		provento.setUsuario(usuarioRepository.getById(idUsuario));
@@ -34,21 +38,16 @@ public class CadastroProventoService {
 		return proventoRepository.save(provento);
 	}
 	
+	@Transactional
+	public void remover(Long id) {
+		try {
+			proventoRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new NullPointerException("erro de integridade no banco");
+		}
+	}
+	
+	
+	
 	
 }
-
-
-
-
-
-//@ManyToOne
-//@JoinColumn(nullable = false, name="id_usuario")
-//private Usuario usuario;
-//
-//@ManyToOne
-//@JoinColumn(nullable = false, name="id_tipo_entrada")
-//private TipoEntrada tipoEntrada;
-//
-//@ManyToOne
-//@JoinColumn(nullable = false, name = "id_tipo_moeda")
-//private TipoMoeda tipoMoeda;
