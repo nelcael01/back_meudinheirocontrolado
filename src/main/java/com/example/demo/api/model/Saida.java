@@ -42,6 +42,16 @@ public class Saida {
 	@ManyToOne
 	@JoinColumn(nullable = false, name="id_categoria_despesa")
 	private CategoriaDespesa categoriaDespesa;
+	
+	
+
+	public Long getId_saida() {
+		return id_saida;
+	}
+
+	public void setId_saida(Long id_saida) {
+		this.id_saida = id_saida;
+	}
 
 	public OffsetDateTime getData() {
 		return data;

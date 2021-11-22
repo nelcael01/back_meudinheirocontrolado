@@ -38,14 +38,14 @@ public class ProventoController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void criar(@RequestBody Provento provento) {
-		proventoService.salvar(provento);
+		proventoRepository.save(provento);
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("{id}")
 	public void atualizar(@PathVariable Long id, @RequestBody Provento provento) {
 		Provento proventoBuscado = proventoRepository.getById(id);
 		BeanUtils.copyProperties(provento, proventoBuscado, "id_provento", "data");
-		proventoService.salvar(proventoBuscado);
+		proventoRepository.save(proventoBuscado);
 	}
 	
 	@DeleteMapping("{id}")
