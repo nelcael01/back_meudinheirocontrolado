@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,7 +34,7 @@ public class UsuarioController {
 		return usuarioRepository.findAll();
 	}
 	
-	@GetMapping("/buscaLogin")
+	@PostMapping("/buscaLogin")
 	public boolean buscaLogin(@RequestBody UsuarioVO usuarioVO) {
 		try {
 			Usuario usuario = usuarioRepository.consultaLogin(usuarioVO.getNome(),usuarioVO.getSenha());
@@ -43,6 +44,21 @@ public class UsuarioController {
 				return false;
 			}
 			
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	@PutMapping("/atualizarUsuario")
+	public boolean atualizarUsuario(@RequestBody UsuarioVO usuarioVO) {
+		try {
+			Usuario usuarioBuscado = usuarioRepository.ConsultaNome(usuarioVO.getNome());
+			if (usuarioBuscado.getId_usuario() != null) {
+				int linhas = usuarioRepository.atualizarUsuario(usuarioVO.getSenha(), usuarioBuscado.getNome());
+				return true;
+			}else {
+				return false;
+			}
 		} catch (Exception e) {
 			return false;
 		}
