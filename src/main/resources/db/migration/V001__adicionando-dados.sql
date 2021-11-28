@@ -1,4 +1,4 @@
-((re((reINSERT INTO usuario (id_usuario, cpf, endereco, nome, senha, telefone) 
+INSERT INTO usuario (id_usuario, cpf, endereco, nome, senha, telefone) 
 VALUES 
 (1,"03924709181", "Rua Antonio Batista", "Nelcael", "senha123", "993516160"),
 (2,"55555555555", "Rua belo horizonte", "Ludmila", "senha890", "999999999");

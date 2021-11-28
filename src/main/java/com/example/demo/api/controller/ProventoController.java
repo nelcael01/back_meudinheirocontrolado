@@ -32,25 +32,31 @@ public class ProventoController {
 	
 	@GetMapping
 	public List<Provento> listar() {
-		return proventoRepository.findAll();
+		return proventoRepository.buscarAll();
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void criar(@RequestBody Provento provento) {
-		proventoRepository.save(provento);
+		proventoService.salvar(provento);
 	}
 	
 	@PutMapping("{id}")
 	public void atualizar(@PathVariable Long id, @RequestBody Provento provento) {
 		Provento proventoBuscado = proventoRepository.getById(id);
 		BeanUtils.copyProperties(provento, proventoBuscado, "id_provento", "data");
-		proventoRepository.save(proventoBuscado);
+		proventoRepository.atualizarProvento(
+				proventoBuscado.getValor(),
+				proventoBuscado.getUsuario().getId_usuario(),
+				proventoBuscado.getTipoEntrada().getId_tipo_entrada(),
+				proventoBuscado.getTipoMoeda().getId_tipo_moeda(),
+				proventoBuscado.getId_provento()
+		);
 	}
 	
 	@DeleteMapping("{id}")
 	public void remover(@PathVariable Long id) {
-		proventoService.remover(id);
+		proventoRepository.deletar(id);
 	}
 	
 }

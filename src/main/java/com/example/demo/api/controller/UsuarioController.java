@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.api.VO.UsuarioVO;
 import com.example.demo.api.model.Usuario;
 import com.example.demo.api.repository.UsuarioRepository;

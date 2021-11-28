@@ -1,53 +1,31 @@
 package com.example.demo.domain.service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.model.Provento;
-import com.example.demo.api.repository.ProventoRepository;
-import com.example.demo.api.repository.TipoEntradaRepository;
-import com.example.demo.api.repository.TipoMoedaRepository;
-import com.example.demo.api.repository.UsuarioRepository;
 
 @Service
 public class CadastroProventoService {
 	
 	@Autowired
-	private ProventoRepository proventoRepository;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
-	private TipoEntradaRepository tipoEntradaRepository;
-	
-	@Autowired
-	private TipoMoedaRepository tipoMoedaRepository;
+	private EntityManager entityManager;
 	
 	@Transactional
-	public Provento salvar(Provento provento) {
-		Long idUsuario = provento.getUsuario().getId_usuario();
-		provento.setUsuario(usuarioRepository.getById(idUsuario));
-		Long idTipoEntrada = provento.getTipoEntrada().getId_tipo_entrada();
-		provento.setTipoEntrada(tipoEntradaRepository.getById(idTipoEntrada));
-		Long idTipoMoeda = provento.getTipoMoeda().getId_tipo_moeda();
-		provento.setTipoMoeda(tipoMoedaRepository.getById(idTipoMoeda));
-		return proventoRepository.save(provento);
+	public void salvar(Provento provento) {
+		entityManager.createNativeQuery(
+			"INSERT INTO provento ( id_provento, data, valor, id_usuario, id_tipo_entrada, id_tipo_moeda) VALUES (?,?,?,?,?,?)")
+	    	.setParameter(1, provento.getId_provento())  	
+	    	.setParameter(2, provento.getData().now())
+	    	.setParameter(3, provento.getValor())
+			.setParameter(4, provento.getUsuario().getId_usuario())
+			.setParameter(5, provento.getTipoEntrada().getId_tipo_entrada())
+			.setParameter(6, provento.getTipoMoeda().getId_tipo_moeda())
+			.executeUpdate();
 	}
-	
-	@Transactional
-	public void remover(Long id) {
-		try {
-			proventoRepository.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new NullPointerException("erro de integridade no banco");
-		}
-	}
-	
-	
 	
 	
 }
