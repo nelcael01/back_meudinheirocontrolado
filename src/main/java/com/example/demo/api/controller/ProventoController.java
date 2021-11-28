@@ -43,7 +43,7 @@ public class ProventoController {
 	
 	@PutMapping("{id}")
 	public void atualizar(@PathVariable Long id, @RequestBody Provento provento) {
-		Provento proventoBuscado = proventoRepository.getById(id);
+		Provento proventoBuscado = proventoRepository.buscarPorId(id);
 		BeanUtils.copyProperties(provento, proventoBuscado, "id_provento", "data");
 		proventoRepository.atualizarProvento(
 				proventoBuscado.getValor(),

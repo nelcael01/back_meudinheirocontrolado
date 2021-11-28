@@ -19,7 +19,7 @@ public class TipoMoedaController {
 	
 	@GetMapping
 	public List<TipoMoeda> listar() {
-		return tipoMoedaRepository.findAll();
+		return tipoMoedaRepository.buscarAll();
 	}
 
 }

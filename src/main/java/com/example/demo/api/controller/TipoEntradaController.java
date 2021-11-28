@@ -19,7 +19,7 @@ public class TipoEntradaController {
 	
 	@GetMapping
 	public List<TipoEntrada> listar() {
-		return tipoEntradaRepository.findAll();
+		return tipoEntradaRepository.buscarAll();
 	}
 
 }

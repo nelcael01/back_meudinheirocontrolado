@@ -18,7 +18,7 @@ public class CategoriaDespesaController {
 	
 	@GetMapping
 	public List<CategoriaDespesa> listar() {
-		return categoriaRepository.findAll();
+		return categoriaRepository.buscarAll();
 	}
 	
 }

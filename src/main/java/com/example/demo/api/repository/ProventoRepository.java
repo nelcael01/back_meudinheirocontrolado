@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.demo.api.model.Provento;
-import com.example.demo.api.model.Saida;
 
 public interface ProventoRepository extends JpaRepository<Provento, Long>{
 	
@@ -20,7 +19,7 @@ public interface ProventoRepository extends JpaRepository<Provento, Long>{
 	List<Provento> buscarAll();
 	
 	@Query(value = "select * from Provento p where p.id_provento = ?", nativeQuery = true)
-	Saida buscarPorId(@Param("id_provento")Long id_provento );
+	Provento buscarPorId(@Param("id_provento")Long id_provento );
 	
 	@Transactional
 	@Modifying

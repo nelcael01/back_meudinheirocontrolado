@@ -45,7 +45,7 @@ public class SaidaController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void criar(@RequestBody Saida saida) {
 		Long idProvento = saida.getProvento().getId_provento();
-		saida.setProvento(proventoRepository.getById(idProvento));
+		saida.setProvento(proventoRepository.buscarPorId(idProvento));
 		Long idCategoriaDespesa= saida.getCategoriaDespesa().getId_categoria_despesa();
 		saida.setCategoriaDespesa(categoriaDespesaRepository.getById(idCategoriaDespesa));
 		saidaService.salvar(saida);

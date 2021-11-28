@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.api.VO.UsuarioVO;
 import com.example.demo.api.model.Usuario;
 import com.example.demo.api.repository.UsuarioRepository;
+import com.example.demo.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -22,15 +23,18 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	@Autowired
+	private CadastroUsuarioService usuarioService;
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void criar(@RequestBody Usuario usuario) {
-		usuarioRepository.save(usuario);
+		usuarioService.salvar(usuario);
 	}
 	
 	@GetMapping
 	public List<Usuario> listar() {
-		return usuarioRepository.findAll();
+		return usuarioRepository.buscarAll();
 	}
 	
 	@PostMapping("/buscaLogin")
