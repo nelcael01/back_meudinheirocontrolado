@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.api.VO.UsuarioReturnLoginVO;
 import com.example.demo.api.VO.UsuarioVO;
 import com.example.demo.api.model.Usuario;
 import com.example.demo.api.repository.UsuarioRepository;
@@ -38,17 +40,24 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/buscaLogin")
-	public boolean buscaLogin(@RequestBody UsuarioVO usuarioVO) {
+	public UsuarioReturnLoginVO buscaLogin(@RequestBody UsuarioVO usuarioVO) {
+		UsuarioReturnLoginVO returnLogin = new UsuarioReturnLoginVO();
 		try {
 			Usuario usuario = usuarioRepository.consultaLogin(usuarioVO.getNome(),usuarioVO.getSenha());
 			if (usuario.getId_usuario() != null) {
-				return true;
-			}else {
-				return false;
+				returnLogin.setLogado(true);
+				returnLogin.setId_logado(usuario.getId_usuario());
+				returnLogin.setNome(usuario.getNome());
+				System.out.println(returnLogin.getId_logado());
+				System.out.println(returnLogin.getLogado());
 			}
+			return returnLogin;
 			
 		} catch (Exception e) {
-			return false;
+			returnLogin.setLogado(false);
+			returnLogin.setId_logado(null);
+			returnLogin.setNome("");
+			return returnLogin;
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package com.example.demo.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.api.model.Provento;
 import com.example.demo.api.model.Saida;
 import com.example.demo.api.repository.CategoriaDespesaRepository;
 import com.example.demo.api.repository.ProventoRepository;
@@ -36,9 +38,18 @@ public class SaidaController {
 	@Autowired
 	private CategoriaDespesaRepository categoriaDespesaRepository;
 	
-	@GetMapping
-	public List<Saida> listar() {
-		return saidaRepository.buscarAll();
+	@GetMapping("/{id}")
+	public List<Saida> listar(@PathVariable Long id) {
+		List<Provento> proventos = proventoRepository.buscarAll(id);
+		List<Saida> saidasProvento = new ArrayList<>();
+		if (proventos != null) {
+			for (int i=0; i < proventos.size(); i++) {
+				saidasProvento = saidaRepository.buscarAll(proventos.get(i).getId_provento()) ;
+			}
+			return  saidasProvento;
+		}else {
+			return null;
+		}
 	}
 	
 	@PostMapping

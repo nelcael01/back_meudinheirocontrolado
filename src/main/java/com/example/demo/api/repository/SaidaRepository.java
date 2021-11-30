@@ -14,8 +14,9 @@ import com.example.demo.api.model.Saida;
 
 public interface SaidaRepository extends JpaRepository<Saida, Long>{
 	
-	@Query(value = "select * from Saida ORDER BY valor DESC" , nativeQuery = true)
-	List<Saida> buscarAll();
+	
+	@Query(value = "select * from Saida where id_provento = :id_provento ORDER BY valor DESC" , nativeQuery = true)
+	List<Saida> buscarAll(@Param("id_provento")Long id_provento);
 	
 	@Query(value = "select * from Saida s where s.id_saida = ?", nativeQuery = true)
 	Saida buscarPorId(@Param("id_saida")Long id_saida );

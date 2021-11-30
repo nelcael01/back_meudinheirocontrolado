@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.api.model.Provento;
+import com.example.demo.api.model.Saida;
 import com.example.demo.api.repository.ProventoRepository;
+import com.example.demo.api.repository.SaidaRepository;
 import com.example.demo.domain.service.CadastroProventoService;
 
 
@@ -30,9 +32,12 @@ public class ProventoController {
 	@Autowired
 	private CadastroProventoService proventoService;
 	
-	@GetMapping
-	public List<Provento> listar() {
-		return proventoRepository.buscarAll();
+	@Autowired
+	private SaidaRepository saidaRepository;
+	
+	@GetMapping("/{id}")
+	public List<Provento> listar(@PathVariable Long id) {
+		return proventoRepository.buscarAll(id);
 	}
 	
 	@PostMapping
@@ -54,9 +59,16 @@ public class ProventoController {
 		);
 	}
 	
+	//se for retornado 1, ele não pode excluir pq o provento está em uso em alguma saida
 	@DeleteMapping("{id}")
-	public void remover(@PathVariable Long id) {
-		proventoRepository.deletar(id);
+	public int remover(@PathVariable Long id) {
+		List<Saida> saidas = saidaRepository.buscarAll(id);
+		if (!saidas.isEmpty()) {
+			return 1;
+		}else {
+			proventoRepository.deletar(id);
+			return 0;
+		}
 	}
 	
 }

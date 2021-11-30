@@ -15,8 +15,8 @@ import com.example.demo.api.model.Provento;
 public interface ProventoRepository extends JpaRepository<Provento, Long>{
 	
 	
-	@Query(value = "select * from Provento ORDER BY valor DESC" , nativeQuery = true)
-	List<Provento> buscarAll();
+	@Query(value = "select * from Provento where id_usuario = :id_usuario ORDER BY valor DESC" , nativeQuery = true)
+	List<Provento> buscarAll(@Param("id_usuario")Long id_usuario);
 	
 	@Query(value = "select * from Provento p where p.id_provento = ?", nativeQuery = true)
 	Provento buscarPorId(@Param("id_provento")Long id_provento );
